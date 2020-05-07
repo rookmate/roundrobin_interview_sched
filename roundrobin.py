@@ -4,10 +4,9 @@ import pandas as pd
 
 import sys
 
-if __name__ == "__main__":
-    # Doodle needs to be exported to xls
-    # Parse xls to csv
-    read_file = pd.read_excel(r'Doodle.xls', sheet_name='Poll', encoding='utf-8')
+
+def read_xls_to_dataframe(fp):
+    read_file = pd.read_excel(fp, sheet_name='Poll', encoding='utf-8')
     read_file.to_csv(r'Doodle.csv', encoding='utf-8', index=None, header=True)
 
     doodle = pd.read_csv("Doodle.csv",
@@ -18,7 +17,10 @@ if __name__ == "__main__":
                          squeeze=True,
                          keep_default_na=False
                          )[:-1]
+    return doodle
 
+
+def get_interviewers_available(dataframe):
     interviewers = {}
     patch_date = True
     ym = '' # Stores year/month
@@ -59,16 +61,19 @@ if __name__ == "__main__":
             availabilities[key] = hour_segments[key]
 
         interviewers[row[0]] = availabilities
+    return interviewers
 
+
+if __name__ == "__main__":
+    # Doodle needs to be exported to xls
+    # Parse xls to csv
+    # TODO: need to be argument for argparse
+    doodle = read_xls_to_dataframe(r'Doodle.xls')
+
+    # Matches interviewers with available dates
+    interviewers = get_interviewers_available(doodle)
     for e in interviewers.items():
         print(e)
-
-    print(hour_segments)
-    #print(interviewers)
-    #print(doodle)
-
-
-
 
     sys.exit()
     # Generate one dict with names as keys and availabilities as values
