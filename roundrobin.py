@@ -63,6 +63,7 @@ def get_interviewers_available(dataframe):
                 continue
             availabilities[key] = hour_segments[key]
 
+        availabilities = [(value) for key, value in availabilities.items()]
         interviewers[row[0]] = availabilities
     return interviewers
 
