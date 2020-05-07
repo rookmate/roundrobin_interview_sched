@@ -75,21 +75,23 @@ if __name__ == "__main__":
     doodle = read_xls_to_dataframe(r'Doodle.xls')
 
     # Matches interviewers with available dates
-    interviewers = get_interviewers_available(doodle)
-    for e in interviewers.items():
-        print(e)
-
-    sys.exit()
     # Generate one dict with names as keys and availabilities as values
+    interviewers = get_interviewers_available(doodle)
     # Number of interviews per candidate
     # TODO: need to be argument for argparse
-    num_int_cand = 2
+    int_per_cand = 2
     # Pair up the interviewers
-    roundrobin = list(itertools.combinations(interviewers.keys(), num_int_cand))
-    print(roundrobin)
+    roundrobin = list(itertools.combinations(interviewers.keys(), int_per_cand))
     # Match roundrobin with possible calendar availability
+    robin_cal = {}
     for pair in roundrobin:
         calendar_intersect = list(set(interviewers[pair[0]])
                                   .intersection(interviewers[pair[1]])
                                   )
-        print(pair, calendar_intersect)
+        robin_cal[pair] = calendar_intersect
+    # TODO: need to be argument for argparse
+    # Number of Candidates
+    num_candidates = 10
+    print(robin_cal.keys())
+    print(num_candidates, len(robin_cal))
+    # TODO: Find a pretty way to display this info
