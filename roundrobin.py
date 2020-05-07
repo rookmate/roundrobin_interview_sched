@@ -54,8 +54,8 @@ def get_interviewers_available(dataframe):
 
         if row[0] == '':
             continue
-        availabilities = row[1:].to_dict()
-        for key, value in availabilities.items():
+        availabilities = {}
+        for key, value in row[1:].to_dict().items():
             if value == '':
                 continue
             availabilities[key] = hour_segments[key]
