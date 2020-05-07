@@ -39,6 +39,7 @@ def get_interviewers_available(dataframe):
             hour_segments = row.to_dict()
             continue
 
+        # Patches the date to have the week/day and year/month
         if patch_date:
             for key, value in year_month.items():
                 # Stores the year/month to use later
@@ -52,8 +53,10 @@ def get_interviewers_available(dataframe):
                 hour_segments[key] = wd + ' ' + ym + ' ' + hour_segments[key]
             patch_date = False
 
+        # Skips empty interviewers
         if row[0] == '':
             continue
+        # Stores availabilities for each user
         availabilities = {}
         for key, value in row[1:].to_dict().items():
             if value == '':
