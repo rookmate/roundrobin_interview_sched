@@ -105,6 +105,6 @@ if __name__ == "__main__":
     # TODO: need to be argument for argparse
     # Number of Candidates
     num_candidates = 10
-    for elem in robin_cal.iteritems():
+    for elem in robin_cal.items():
         print(elem)
     # TODO: Find a pretty way to display this info
