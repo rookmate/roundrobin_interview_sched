@@ -1,5 +1,6 @@
 import itertools
 import pandas as pd
+from dateutil.parser import parse
 
 
 class Doodle():
@@ -45,14 +46,18 @@ class Doodle():
             if patch_date:
                 for key, value in year_month.items():
                     # Stores the year/month to use later
-                    if value != '':
+                    if value.strip() != '':
                         ym = value
                     # Stores week/day to use later
-                    if week_day[key] != '':
+                    if week_day[key].strip() != '':
                         wd = week_day[key]
                     else:
                         week_day[key] = wd
-                    hour_segments[key] = wd + ' ' + ym + ' ' + hour_segments[key]
+                    dt = wd + ' ' + ym
+                    if wd != '' or ym != '':
+                        dt = parse(dt)
+                        dt = dt.strftime('%Y-%m-%d')
+                    hour_segments[key] = dt + ' ' + hour_segments[key]
                 break;
         # Creates new row to add
         new_row = pd.DataFrame(hour_segments, index=[0])
@@ -75,7 +80,7 @@ class Doodle():
                     continue
                 availabilities[key] = df.iloc[0][key]
 
-            availabilities = [(value) for key, value in availabilities.items()]
+            availabilities = list((value) for key, value in availabilities.items())
             interviewers[row[0]] = availabilities
         self.interviewers = interviewers
 
@@ -107,5 +112,4 @@ if __name__ == "__main__":
     int_per_cand = 2
     rcal = Doodle(r'Doodle.xls', int_per_cand)
     rcal.get_cal_robin_dict()
-    for elem in rcal.robin_cal.items():
-        print(elem)
+
