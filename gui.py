@@ -42,6 +42,9 @@ class Gui(QDialog):
         # Show GUI
         self.show()
 
+    # TODO: Display info in a new textbox after pressing a button
+    # TODO: Remove number of candidates from form
+    # TODO: Change Interviews per candidate to Interviewers per candidate
     def createFormGroupBox(self):
         self.formGroupBox = QGroupBox("Requirements")
         layout = QFormLayout()

@@ -72,11 +72,9 @@ if __name__ == '__main__':
     gui.exec_()
 
     doodle = roundrobin.Doodle(gui.file, gui.int_per_cand.value())
+    #doodle = roundrobin.Doodle("Doodle.xls", 2)
     doodle.get_cal_robin_dict()
     robin_cal_by_date = reverse_dict(doodle.robin_cal)
-    # TODO: Find a pretty way to display this info
     robin_cal_by_date_clean = clean_repeated_pairs(robin_cal_by_date)
     for key in sorted(robin_cal_by_date_clean):
         print (key, robin_cal_by_date_clean[key])
-    # Number of Candidates
-    num_candidates = gui.num_candidates.value()
