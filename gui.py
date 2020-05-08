@@ -20,6 +20,7 @@ class Gui(QDialog):
         self.int_per_cand = QSpinBox()
         self.int_per_cand.setValue(2)
         self.num_candidates = QSpinBox()
+        self.num_candidates.setValue(0)
         self.initUI()
 
     def initUI(self):
