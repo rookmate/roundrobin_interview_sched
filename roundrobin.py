@@ -2,8 +2,6 @@ import argparse
 import itertools
 import pandas as pd
 
-import sys
-
 
 def read_xls_to_dataframe(fp):
     read_file = pd.read_excel(fp, sheet_name='Poll', encoding='utf-8')
@@ -78,11 +76,11 @@ def get_interviewers_available(df):
     return interviewers
 
 
-if __name__ == "__main__":
+def get_cal_robin_dict(fp):
     # Doodle needs to be exported to xls
     # Parse xls to csv
     # TODO: need to be argument for argparse
-    doodle = read_xls_to_dataframe(r'Doodle.xls')
+    doodle = read_xls_to_dataframe(fp)
     doodle = clean_date_data(doodle)
     # Matches interviewers with available dates
     # Generate one dict with names as keys and availabilities as values
@@ -99,9 +97,14 @@ if __name__ == "__main__":
                                   .intersection(interviewers[pair[1]])
                                   )
         robin_cal[pair] = calendar_intersect
+    return robin_cal
+
+
+if __name__ == "__main__":
+    robin_cal = get_cal_robin_dict(r'Doodle.xls')
     # TODO: need to be argument for argparse
     # Number of Candidates
     num_candidates = 10
-    print(robin_cal.keys())
-    print(num_candidates, len(robin_cal))
+    for elem in robin_cal.iteritems():
+        print(elem)
     # TODO: Find a pretty way to display this info
