@@ -20,12 +20,11 @@ def read_xls_to_dataframe(fp):
     return doodle
 
 
-def get_interviewers_available(dataframe):
-    interviewers = {}
+def clean_date_data(df):
     patch_date = True
     ym = '' # Stores year/month
     wd = '' # Stores week/day
-    for index, row in doodle.iterrows():
+    for index, row in df.iterrows():
         if index == 0:
             # Get year and month in variables
             year_month = row.to_dict()
@@ -51,17 +50,28 @@ def get_interviewers_available(dataframe):
                 else:
                     week_day[key] = wd
                 hour_segments[key] = wd + ' ' + ym + ' ' + hour_segments[key]
-            patch_date = False
+            break;
+    # Creates new row to add
+    new_row = pd.DataFrame(hour_segments, index=[0])
+    # Deletes the previous split dates
+    df = df.drop([0, 1, 2])
+    # Concatenates at the top
+    df = pd.concat([new_row, df]).reset_index(drop=True)
+    return df
 
-        # Skips empty interviewers
-        if row[0] == '':
+
+def get_interviewers_available(df):
+    interviewers = {}
+    for index, row in df.iterrows():
+        # Skips empty lines of interviewers
+        if row[0].strip() == '':
             continue
         # Stores availabilities for each user
         availabilities = {}
         for key, value in row[1:].to_dict().items():
-            if value == '':
+            if value.strip() == '':
                 continue
-            availabilities[key] = hour_segments[key]
+            availabilities[key] = df.iloc[0][key]
 
         availabilities = [(value) for key, value in availabilities.items()]
         interviewers[row[0]] = availabilities
@@ -73,7 +83,7 @@ if __name__ == "__main__":
     # Parse xls to csv
     # TODO: need to be argument for argparse
     doodle = read_xls_to_dataframe(r'Doodle.xls')
-
+    doodle = clean_date_data(doodle)
     # Matches interviewers with available dates
     # Generate one dict with names as keys and availabilities as values
     interviewers = get_interviewers_available(doodle)
