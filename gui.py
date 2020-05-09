@@ -19,8 +19,6 @@ class Gui(QDialog):
         self.button = QPushButton('File', self)
         self.int_per_cand = QSpinBox()
         self.int_per_cand.setValue(2)
-        self.num_candidates = QSpinBox()
-        self.num_candidates.setValue(0)
         self.initUI()
 
     def initUI(self):
@@ -43,14 +41,12 @@ class Gui(QDialog):
         self.show()
 
     # TODO: Display info in a new textbox after pressing a button
-    # TODO: Remove number of candidates from form
     # TODO: Change Interviews per candidate to Interviewers per candidate
     def createFormGroupBox(self):
         self.formGroupBox = QGroupBox("Requirements")
         layout = QFormLayout()
         layout.addRow(QLabel("File:"), self.button)
         layout.addRow(QLabel("Interviews per candidate:"), self.int_per_cand)
-        layout.addRow(QLabel("Number of candidates:"), self.num_candidates)
         self.formGroupBox.setLayout(layout)
 
     def openFileNameDialog(self):
