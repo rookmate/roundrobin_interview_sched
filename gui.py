@@ -97,7 +97,7 @@ class Gui(QDialog):
         doodle.get_cal_robin_dict()
         # Gets the round robin calendar sorted by date
         cal_by_date = dict_utils.reverse_dict(doodle.robin_cal)
-        cal_by_data = dict_utils.clean_repeated_pairs(cal_by_date)
+        cal_by_date = dict_utils.clean_repeated_pairs(cal_by_date)
         self.calc_data = dict_utils.dict_to_string(cal_by_date)
 
     @pyqtSlot()
