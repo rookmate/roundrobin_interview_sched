@@ -16,7 +16,8 @@ class Gui(QDialog):
         self.top = 10
         self.width = 640
         self.height = 180
-        self.button = QPushButton('File', self)
+        self.file_selected = QLineEdit(self)
+        self.file_button = QPushButton('File', self)
         self.int_per_cand = QSpinBox()
         self.int_per_cand.setValue(2)
         self.initUI()
@@ -30,13 +31,14 @@ class Gui(QDialog):
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
+
         # Setup Google form
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.formGroupBox)
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
         # Browse file button action
-        self.button.clicked.connect(self.on_click)
+        self.file_button.clicked.connect(self.file_on_click)
         # Show GUI
         self.show()
 
@@ -44,8 +46,9 @@ class Gui(QDialog):
     def createFormGroupBox(self):
         self.formGroupBox = QGroupBox("Requirements")
         layout = QFormLayout()
-        layout.addRow(QLabel("File:"), self.button)
         layout.addRow(QLabel("Interviewers per candidate:"), self.int_per_cand)
+        layout.addRow(QLabel("Browse directory:"), self.file_button)
+        layout.addRow(QLabel("File selected:"), self.file_selected)
         self.formGroupBox.setLayout(layout)
 
     def openFileNameDialog(self):
@@ -54,9 +57,10 @@ class Gui(QDialog):
         fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)
         if fileName:
             self.file = fileName
+            self.file_selected.setText(fileName)
 
     @pyqtSlot()
-    def on_click(self):
+    def file_on_click(self):
         self.openFileNameDialog()
 
 
