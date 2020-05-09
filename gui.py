@@ -3,6 +3,7 @@ QFormLayout, QGroupBox, QLabel, QLineEdit, QPushButton, QSpinBox, QVBoxLayout,
 QFileDialog, QMessageBox)
 from PyQt5.QtCore import pyqtSlot
 
+import os
 import sys
 import dict_utils
 import roundrobin
@@ -18,6 +19,7 @@ class Gui(QDialog):
         self.top = 10
         self.width = 640
         self.height = 180
+        self.file = ""
         self.file_selected = QLineEdit(self)
         self.file_button = QPushButton('File', self)
         self.calculate_button = QPushButton('Calculate', self)
@@ -70,8 +72,7 @@ class Gui(QDialog):
     def file_on_click(self):
         self.openFileNameDialog()
 
-    @pyqtSlot()
-    def calculate_on_click(self):
+    def calculate_roundrobin(self):
         doodle = roundrobin.Doodle(self.file, self.int_per_cand.value())
         doodle.get_cal_robin_dict()
         # Gets the round robin calendar sorted by date
@@ -80,7 +81,15 @@ class Gui(QDialog):
 
         # TODO: Display info in a new textbox after pressing a button
         self.calculate_button = QMessageBox.information(self, self.calc_title,
-                                                        self.calc_data)
+                                                        QTableWidget())
+
+    @pyqtSlot()
+    def calculate_on_click(self):
+        if os.path.isfile(self.file):
+            self.calculate_roundrobin()
+        else:
+            QMessageBox.warning(self, self.calc_title, self.calc_data)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
