@@ -41,12 +41,11 @@ class Gui(QDialog):
         self.show()
 
     # TODO: Display info in a new textbox after pressing a button
-    # TODO: Change Interviews per candidate to Interviewers per candidate
     def createFormGroupBox(self):
         self.formGroupBox = QGroupBox("Requirements")
         layout = QFormLayout()
         layout.addRow(QLabel("File:"), self.button)
-        layout.addRow(QLabel("Interviews per candidate:"), self.int_per_cand)
+        layout.addRow(QLabel("Interviewers per candidate:"), self.int_per_cand)
         self.formGroupBox.setLayout(layout)
 
     def openFileNameDialog(self):
