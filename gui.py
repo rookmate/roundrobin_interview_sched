@@ -1,9 +1,11 @@
 from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox,
 QFormLayout, QGroupBox, QLabel, QLineEdit, QPushButton, QSpinBox, QVBoxLayout,
-QFileDialog)
+QFileDialog, QMessageBox)
 from PyQt5.QtCore import pyqtSlot
 
 import sys
+import dict_utils
+import roundrobin
 
 class Gui(QDialog):
     NumGridRows = 3
@@ -18,6 +20,9 @@ class Gui(QDialog):
         self.height = 180
         self.file_selected = QLineEdit(self)
         self.file_button = QPushButton('File', self)
+        self.calculate_button = QPushButton('Calculate', self)
+        self.calc_title = "Roundrobin calculations"
+        self.calc_data = "No data provided"
         self.int_per_cand = QSpinBox()
         self.int_per_cand.setValue(2)
         self.initUI()
@@ -35,14 +40,16 @@ class Gui(QDialog):
         # Setup Google form
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.formGroupBox)
+        mainLayout.addWidget(self.calculate_button)
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
         # Browse file button action
         self.file_button.clicked.connect(self.file_on_click)
+        # Calculate results button action
+        self.calculate_button.clicked.connect(self.calculate_on_click)
         # Show GUI
         self.show()
 
-    # TODO: Display info in a new textbox after pressing a button
     def createFormGroupBox(self):
         self.formGroupBox = QGroupBox("Requirements")
         layout = QFormLayout()
@@ -63,6 +70,17 @@ class Gui(QDialog):
     def file_on_click(self):
         self.openFileNameDialog()
 
+    @pyqtSlot()
+    def calculate_on_click(self):
+        doodle = roundrobin.Doodle(self.file, self.int_per_cand.value())
+        doodle.get_cal_robin_dict()
+        # Gets the round robin calendar sorted by date
+        cal_by_date = dict_utils.reverse_dict(doodle.robin_cal)
+        cal_by_date_clean = dict_utils.clean_repeated_pairs(cal_by_date)
+
+        # TODO: Display info in a new textbox after pressing a button
+        self.calculate_button = QMessageBox.information(self, self.calc_title,
+                                                        self.calc_data)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
