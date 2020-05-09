@@ -65,16 +65,16 @@ def clean_repeated_pairs(d):
     return clean_d
 
 
+def dict_to_string(d):
+    str_dict = ""
+    for key in sorted(d):
+        str_dict = str_dict + key + "\t|\t" + str(d[key]) + "\n"
+    return str_dict
+
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    gui = gui.Gui()
-    gui.exec_()
-
-    doodle = roundrobin.Doodle(gui.file, gui.int_per_cand.value())
-    #doodle = roundrobin.Doodle("Doodle.xls", 2)
+    doodle = roundrobin.Doodle("Doodle.xls", 2)
     doodle.get_cal_robin_dict()
     robin_cal_by_date = reverse_dict(doodle.robin_cal)
     robin_cal_by_date_clean = clean_repeated_pairs(robin_cal_by_date)
-    for key in sorted(robin_cal_by_date_clean):
-        print (key, robin_cal_by_date_clean[key])
+    print(dict_to_string(robin_cal_by_date))
