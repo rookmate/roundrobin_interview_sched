@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox,
 QFormLayout, QGroupBox, QLabel, QLineEdit, QPushButton, QSpinBox, QVBoxLayout,
-QFileDialog, QMessageBox, QMainWindow)
+QFileDialog, QMessageBox, QMainWindow, QTextEdit)
 from PyQt5.QtCore import pyqtSlot
 
 import os
@@ -23,7 +23,7 @@ class LargeMessageBox(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         # Create textbox
-        self.textbox = QLineEdit(self)
+        self.textbox = QTextEdit(self)
         self.textbox.move(20, 20)
         self.textbox.resize(1240, 680)
         # TODO: get the text to be displayed multiline
